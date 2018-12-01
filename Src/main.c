@@ -37,6 +37,8 @@
  */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "servoMotor.h"
+#include "stepperMotor.h"
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
@@ -355,7 +357,14 @@ static void MX_GPIO_Init(void) {
 
 /* USER CODE BEGIN 4 */
 void ADC_Conversion(void) {
-
+	HAL_ADC_Start(&hadc1);
+	if (HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY) == HAL_OK) {
+		channel_1 = HAL_ADC_GetValue(&hadc1);
+		if (HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY) == HAL_OK) {
+			channel_2 = HAL_ADC_GetValue(&hadc1);
+		}
+	}
+	HAL_ADC_Stop(&hadc1);
 }
 /* USER CODE END 4 */
 

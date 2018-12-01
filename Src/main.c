@@ -42,7 +42,7 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-
+#define ARRSIZE 32
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -78,7 +78,9 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-
+uint16_t str[ARRSIZE];
+uint16_t channel_1 = 0;
+uint16_t channel_2 = 0;
 /* USER CODE END 0 */
 
 /**
@@ -124,7 +126,12 @@ int main(void) {
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
+		ADC_Conversion();
 
+		sprintf(str, "Joystick: x:%d | y:%d\n\r", channel_1, channel_2);
+		HAL_UART_Transmit(&huart2, str, strlen(str), 1000);
+
+		HAL_Delay(100);
 	}
 	/* USER CODE END 3 */
 

@@ -75,12 +75,19 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 
+void ADC_Conversion(void);
+void valueConversionToPWM(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
 uint16_t str[ARRSIZE];
 uint16_t channel_1 = 0;
 uint16_t channel_2 = 0;
+uint16_t maxADCvalue = 4096;
+
+//float ch_x_converted_PWM = 0;
+//float ch_y_converted_PWM = 0;
+float countsPer_ms = 64616.0/20.0;
 /* USER CODE END 0 */
 
 /**
@@ -117,6 +124,9 @@ int main(void) {
 	MX_SPI2_Init();
 	MX_TIM10_Init();
 	MX_USART2_UART_Init();
+
+	HAL_TIM_Base_Start(&htim10);
+	HAL_TIM_PWM_Start(&htim10,TIM_CHANNEL_1);
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -127,9 +137,13 @@ int main(void) {
 
 		/* USER CODE BEGIN 3 */
 		ADC_Conversion();
+		setPWMValue();
 
 		sprintf(str, "Joystick: x:%d | y:%d\n\r", channel_1, channel_2);
 		HAL_UART_Transmit(&huart2, str, strlen(str), 1000);
+
+		//sprintf(str, "PWM: x:%d | y:%d\n\r", (int)ch_x_converted_PWM, (int)ch_y_converted_PWM);
+		//HAL_UART_Transmit(&huart2, str, strlen(str), 1000);
 
 		HAL_Delay(100);
 	}
@@ -372,6 +386,14 @@ void ADC_Conversion(void) {
 		}
 	}
 	HAL_ADC_Stop(&hadc1);
+}
+
+void setPWMValue(void){
+	float divBy = (maxADCvalue/2.0);
+	float ch_x_converted_PWM = (channel_1/divBy)+0.5;
+	float ch_y_converted_PWM = (channel_2/divBy)+0.5;
+	float PWMValue = ch_y_converted_PWM*countsPer_ms;
+	__HAL_TIM_SET_COMPARE(&htim10, TIM_CHANNEL_1, PWMValue);
 }
 /* USER CODE END 4 */
 

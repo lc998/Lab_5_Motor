@@ -57,6 +57,14 @@
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define In_1_Pin GPIO_PIN_12
+#define In_1_GPIO_Port GPIOB
+#define In_2_Pin GPIO_PIN_13
+#define In_2_GPIO_Port GPIOB
+#define In_3_Pin GPIO_PIN_14
+#define In_3_GPIO_Port GPIOB
+#define In_4_Pin GPIO_PIN_15
+#define In_4_GPIO_Port GPIOB
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14

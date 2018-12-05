@@ -162,7 +162,7 @@ int main(void)
 		sprintf(str, "Joystick: x:%d | y:%d\n\r", channel_1, channel_2);
 		HAL_UART_Transmit(&huart2, str, strlen(str), 1000);
 
-		sprintf(str, "Stepper:%d\n\r", channel_1/512);
+		sprintf(str, "Stepper:%d\n\r", direction);
 		HAL_UART_Transmit(&huart2, str, strlen(str), 1000);
 
 		//sprintf(str, "PWM: x:%d | y:%d\n\r", (int)ch_x_converted_PWM, (int)ch_y_converted_PWM);
